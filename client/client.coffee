@@ -14,3 +14,8 @@ Meteor.Router.add({
 
 getImage = (url) ->
   Meteor.call('pull_image', url)
+
+Template.grab_link.events
+  "click .submit": (e)->
+    e.preventDefault()
+    getImage('http://i.imgur.com/6F7JytV.jpg')
