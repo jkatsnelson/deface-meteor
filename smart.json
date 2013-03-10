@@ -4,6 +4,7 @@
     "branch": "master"
   },
   "packages": {
-    "mocha-web": {}
+    "mocha-web": {},
+    "router": {}
   }
 }
