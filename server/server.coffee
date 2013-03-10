@@ -5,6 +5,6 @@ Meteor.methods
 		id = url.split('/').pop()
 		Images.insert({id: id})
 		Meteor.http.call "GET", url,(err, res) ->
-			Images.update({url: url}, {jpeg: res.content})
+			Images.update {id: id}, {id: id, jpeg: res.content}
 Meteor.Router.add '/public/:id', 'GET', (id) ->
-	return Images.find({id: id})
+	Images.find({id: id})
