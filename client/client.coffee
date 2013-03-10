@@ -11,3 +11,6 @@ Meteor.Router.add({
   '/tests' : 'tests'
   '/': 'main'
 })
+
+getImage = (url) ->
+  Meteor.call('pull_image', url)

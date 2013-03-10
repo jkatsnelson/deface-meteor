@@ -10,3 +10,4 @@ coffeescript
 bootstrap
 mocha-web
 router
+http
