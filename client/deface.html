@@ -13,16 +13,15 @@
 			<div class="row-fluid">
 				<div class="span2">
 					{{> give_link}}
+					{{> grab_link}}
 				</div>
-				<div class="span8">
+				<div class="span10">
 					{{#constant}}
 		  			{{> canvas}}
 		  		{{/constant}}
 		  	</div>
-		  	<div class="span2">
-		  		{{> grab_link}}
-		  	</div>
 	  	</div>
+			{{>image}}
   	</div>
 	</div>
 </template>
@@ -33,18 +32,13 @@
 	</div>
 </template>
 
-<template name="canvas">
-  <canvas id="c" width="800" height="350"></canvas> 
-  <input type="button" value="Preview" class="btn preview" />
-  <input type="button" value="Deface!" class="btn deface" />
-  <image src={{image}} id="image">
-</template>
-
 <template name="grab_link">
 	<form class="url_input">
 	<input type="text"class="span12" placeholder="Put your url in here">
-	<button type="submit" class="btn submit">Deface</button>
-	<button class="erase btn">Erase</button>
+	<button class="btn-primary submit">Submit</button>
+  <button class="btn-primary preview">Preview</button>
+  <button class="btn-primary deface">Deface</button>
+	<button class="btn-primary erase">Erase</button>
 </form>
 </template>
 
@@ -55,4 +49,11 @@
 	<button type="submit" class="btn give_me">Give me</button>
 	<div>{{url}} wat</div>
 	</form>
+</template>
+
+<template name="canvas">
+  <canvas id="c"></canvas>
+</template>
+<template name ="image">
+  <image src={{image}} id="image">
 </template>

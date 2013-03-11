@@ -1,22 +1,12 @@
 image_to_canvas = () ->
   canvas = new fabric.Canvas 'c'
   imgElement = document.getElementById 'image'
-  imgInstance = new fabric.Image imgElement,
-    left: 100
-    top: 100
-    opacity: .85
+  imgInstance = new fabric.Image imgElement
   canvas.add(imgInstance)
   canvas.isDrawingMode = true
 
-Template.canvas.image = ->
+Template.image.image = ->
   return 'data:image/jpeg;base64,' + Session.get('image')
-Template.canvas.events
-  "click .preview": (e) ->
-    e.preventDefault()
-    pull_image_from_db('6F7JytV.jpg')
-  "click .deface": (e) ->
-    e.preventDefault()
-    image_to_canvas()
 
 Meteor.Router.add({
   'tests' : 'tests'
@@ -38,3 +28,9 @@ Template.grab_link.events
   "click .erase": (e) ->
     e.preventDefault()
     Meteor.call 'remove_images'
+  "click .preview": (e) ->
+    e.preventDefault()
+    pull_image_from_db('6F7JytV.jpg')
+  "click .deface": (e) ->
+    e.preventDefault()
+    image_to_canvas()
