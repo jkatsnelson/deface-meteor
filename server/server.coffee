@@ -22,8 +22,7 @@ Meteor.methods
 	get_image: (url) ->
 		id = url.split('/').pop()
 		Images.insert({image_id: id})
-		options = 'encoding': 'base64'
-		Meteor.http.get url, options, (error, result) ->
+		Meteor.http.get url, (error, result) ->
 			fs.writeFileSync('images.jpg', result.content)
 			if error then return console.error error
 			Images.update({image_id: id}, {image_id: id, jpeg: result.content})
