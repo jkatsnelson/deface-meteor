@@ -33,5 +33,4 @@ Meteor.methods
 
 Meteor.Router.add '/public/:id', 'GET', (id) ->
 	img = Images.findOne({image_id: id}).jpeg
-	fs.writeFileSync('image.jpg', img.buffer)
 	return [200, {'Content-Type' : 'image/jpeg'}, img.buffer]

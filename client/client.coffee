@@ -1,6 +1,6 @@
 Meteor.startup ->
   canvas = new fabric.Canvas('c')
-  path = "6F7JytV.jpg"
+  path = "public/6F7JytV.jpg"
   fabric.Image.fromURL path, (img) ->
     img.left = 195
     canvas.add(img)
