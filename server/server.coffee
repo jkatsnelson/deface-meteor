@@ -32,4 +32,4 @@ Meteor.methods
 			).run()
 
 Meteor.Router.add '/images/:id', 'GET', (id) ->
-	return [200, {'Content-Type' : 'image/jpeg' 'Access-Control-Allow-Origin' : '*'}, Images.findOne({image_id: id}).jpeg.buffer]
+	return [200, {'Content-Type' : 'image/jpeg', 'Access-Control-Allow-Origin' : '*'}, Images.findOne({image_id: id}).jpeg.buffer]
