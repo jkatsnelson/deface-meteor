@@ -19,7 +19,7 @@ else console.log 'node_modules not found'
 
 
 Meteor.methods
-	pull_image: (url) ->
+	get_image: (url) ->
 		id = url.split('/').pop()
 		Images.insert({image_id: id})
 		options = 'encoding': 'base64'
@@ -27,7 +27,6 @@ Meteor.methods
 			fs.writeFileSync('images.jpg', result.content)
 			if error then return console.error error
 			Images.update({image_id: id}, {image_id: id, jpeg: result.content})
-
-Meteor.Router.add '/public/:id', 'GET', (id) ->
-	img = Images.findOne({image_id: id}).jpeg
-	return [200, {'Content-Type' : 'image/jpeg'}, img]
+	pull_image: (id) ->
+		image = Images.findOne({image_id: id}).jpeg.buffer
+		return image.toString('base64')

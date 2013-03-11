@@ -35,7 +35,9 @@
 
 <template name="canvas">
   <canvas id="c" width="800" height="350"></canvas> 
-  <input type="button" value="Click" />
+  <input type="button" value="Preview" class="btn preview" />
+  <input type="button" value="Deface!" class="btn deface" />
+  <image src={{image}} id="image">
 </template>
 
 <template name="grab_link">
