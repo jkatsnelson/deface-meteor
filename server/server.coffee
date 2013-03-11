@@ -1,11 +1,9 @@
 require = __meteor_bootstrap__.require;
 fs = require('fs')
 path = require('path')
-
 requestPath = 'node_modules/request'
-
 base = path.resolve '.'
-if base == '/'
+if base is '/'
   base = path.dirname global.require.main.filename
 
 publicPath = path.resolve base+'/public/'+requestPath
@@ -16,7 +14,6 @@ if fs.existsSync publicPath
 else if fs.existsSync staticPath
   request = require staticPath
 else console.log 'node_modules not found'
-
 
 Meteor.methods
 	get_image: (url) ->
