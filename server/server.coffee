@@ -31,6 +31,5 @@ Meteor.methods
 				Images.update({image_id: id}, {image_id: id, jpeg: body})
 			).run()
 
-Meteor.Router.add '/public/:id', 'GET', (id) ->
-	img = Images.findOne({image_id: id}).jpeg
-	return [200, {'Content-Type' : 'image/jpeg'}, img.buffer]
+Meteor.Router.add '/images/:id', 'GET', (id) ->
+	return [200, {'Content-Type' : 'image/jpeg' 'Access-Control-Allow-Origin' : '*'}, Images.findOne({image_id: id}).jpeg.buffer]
