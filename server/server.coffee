@@ -17,7 +17,6 @@ else if fs.existsSync staticPath
   request = require staticPath
 else console.log 'node_modules not found'
 
-
 Meteor.methods
 	get_image: (url) ->
 		id = url.split('/').pop()
