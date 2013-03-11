@@ -10,6 +10,13 @@ image_to_canvas = () ->
 
 Template.canvas.image = ->
   return 'data:image/jpeg;base64,' + Session.get('image')
+Template.canvas.events
+  "click .show": (e) ->
+    e.preventDefault()
+    pull_image_from_db('6F7JytV.jpg')
+  "click .use": (e) ->
+    e.preventDefault()
+    image_to_canvas()
 
 Meteor.Router.add({
   'tests' : 'tests'
