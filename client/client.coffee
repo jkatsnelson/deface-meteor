@@ -35,3 +35,6 @@ Template.grab_link.events
   "click .submit": (e)->
     e.preventDefault()
     get_image_from_url 'http://i.imgur.com/6F7JytV.jpg'
+  "click .erase": (e) ->
+    e.preventDefault()
+    Meteor.call 'remove_images'

@@ -33,3 +33,5 @@ Meteor.methods
 	pull_image: (id) ->
 		image = Images.findOne({image_id: id}).jpeg.buffer
 		return image.toString('base64')
+	remove_images: () ->
+		Images.remove({})
