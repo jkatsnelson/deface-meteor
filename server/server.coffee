@@ -2,19 +2,19 @@ require = __meteor_bootstrap__.require;
 fs = require('fs')
 path = require('path')
 
-httpGetPath = 'node_modules/http-get'
+requestPath = 'node_modules/request'
 
 base = path.resolve '.'
 if base == '/'
   base = path.dirname global.require.main.filename
 
-publicPath = path.resolve base+'/public/'+httpGetPath
-staticPath = path.resolve base+'/static/'+httpGetPath
+publicPath = path.resolve base+'/public/'+requestPath
+staticPath = path.resolve base+'/static/'+requestPath
 
 if fs.existsSync publicPath
-  httpGet = require publicPath
+  request = require publicPath
 else if fs.existsSync staticPath
-  HttpGet = require staticPath
+  request = require staticPath
 else console.log 'node_modules not found'
 
 
@@ -22,11 +22,15 @@ Meteor.methods
 	pull_image: (url) ->
 		id = url.split('/').pop()
 		Images.insert({image_id: id})
-		file = '/Users/john/Projects/deface/public/image.jpg'
-		httpGet.get url: url, file, (error, res) ->
-			if error then console.error error
-			else console.log "file downloaded at: " + result.file
+		options =
+			url: url
+			encoding: null
+		request.get options, (error, result, body) ->
+			if error then return console.error error
+			Fiber(->
+				Images.update({image_id: id}, {image_id: id, jpeg: body})
+			).run()
+
 Meteor.Router.add '/public/:id', 'GET', (id) ->
 	img = Images.findOne({image_id: id}).jpeg
-	console.log img
 	return [200, {'Content-Type' : 'image/jpeg'}, img]
