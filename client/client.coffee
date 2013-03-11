@@ -1,9 +1,13 @@
 image_to_canvas = () ->
   canvas = new fabric.Canvas 'c'
   imgElement = document.getElementById 'image'
-  imgInstance = new fabric.Image imgElement
+  imgInstance = new fabric.Image imgElement,
+    left: 464
+    top: 384
   canvas.add(imgInstance)
   canvas.isDrawingMode = true
+  canvas.setWidth($('img').width())
+  canvas.setHeight($('img').height())
 
 Template.image.image = ->
   return 'data:image/jpeg;base64,' + Session.get('image')
