@@ -19,7 +19,7 @@ else console.log 'node_modules not found'
 
 
 Meteor.methods
-	pull_image: (url) ->
+	get_image: (url) ->
 		id = url.split('/').pop()
 		Images.insert({image_id: id})
 		options =
@@ -30,6 +30,6 @@ Meteor.methods
 			Fiber(->
 				Images.update({image_id: id}, {image_id: id, jpeg: body})
 			).run()
-
-Meteor.Router.add '/images/:id', 'GET', (id) ->
-	return [200, {'Content-Type' : 'image/jpeg', 'Access-Control-Allow-Origin' : '*'}, Images.findOne({image_id: id}).jpeg.buffer]
+	pull_image: (id) ->
+		image = Images.findOne({image_id: id}).jpeg.buffer
+		return image.toString('base64')
