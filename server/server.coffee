@@ -22,14 +22,11 @@ Meteor.methods
 	pull_image: (url) ->
 		id = url.split('/').pop()
 		Images.insert({image_id: id})
-		options =
-			url: url
-			encoding: null
-		request.get options, (error, result, body) ->
+		options = 'encoding': 'base64'
+		Meteor.http.get url, options, (error, result) ->
+			fs.writeFileSync('images.jpg', result.content)
 			if error then return console.error error
-			Fiber(->
-				Images.update({image_id: id}, {image_id: id, jpeg: body})
-			).run()
+			Images.update({image_id: id}, {image_id: id, jpeg: result.content})
 
 Meteor.Router.add '/public/:id', 'GET', (id) ->
 	img = Images.findOne({image_id: id}).jpeg
