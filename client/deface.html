@@ -11,14 +11,15 @@
 		<div class="row-fluid">
 			<h1>Defacebook</h1>
 			<div class="row-fluid">
-				<div class="span9">
-					{{#constant}}
-		  			{{> canvas}}
-		  		{{/constant}}
+				<div class="span6">
+					<div class="canvas well">
+						{{#constant}}
+							{{> canvas}}
+						{{/constant}}
+					</div>
 				</div>
-				<div class="span3">
-					{{> grab_link}}
-					{{> give_link}}
+				<div class="span4">
+					{{> menu}}
 				</div>
 	  	</div>
   	</div>
@@ -30,21 +31,20 @@
 		{{> mochaTestReport}}
 	</div>
 </template>
-
-<template name="grab_link">
-	<label class="url label">Input URL to image</label></br>
-	<input class="span8 drop10 url" type="text" >
-	<button class="btn deface" type="button">Deface!</button>
-	<button class="btn erase" type="button">Erase</button>
-	<button class="btn-primary share">Share</button>
+<template name="menu">
+	<div class="row-fluid deface_menu">
+		<label class="url label">Input URL to image</label></br>
+		<input class="span8 drop10"  id="url" type="text" >
+		<button class="btn deface" type="button">Deface!</button>
+		<button class="btn erase" type="button">Erase</button>
+	</div>
+	<div class="row-fluid">
+		<label class="url label">Let your image loose on the world</label></br>
+		<input type="text" class="span8 drop10" value={{url}}>
+		<button class="btn share">Share</button>
+	</div>
+	</div>
 </form>
-</template>
-
-<template name="give_link">
-	<form class="url_output">
-	<label class="url label">Output URL to image</label>
-	<input type="text" value={{url}}>
-	</form>
 </template>
 
 <template name="canvas">
