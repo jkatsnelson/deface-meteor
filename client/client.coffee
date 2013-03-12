@@ -2,11 +2,13 @@ get_image_from_url = (url) ->
   id = url.split('/').pop()
   Session.set('id', id)
   Meteor.call 'get_image', url, id
+
 pull_image_from_db = (id) ->
   Session.set('start', true)
   Meteor.call 'pull_image', id, (error, result) ->
     if error then console.error error
     Session.set('image', result)
+
 image_to_canvas = () ->
   window.canvas = new fabric.Canvas 'c'
   imgElement = document.getElementById 'image'
@@ -17,6 +19,7 @@ image_to_canvas = () ->
   window.canvas.isDrawingMode = true
   window.canvas.setWidth($('img').width())
   window.canvas.setHeight($('img').height())
+
 share = (name) ->
   if not name then name is Session.get('id')
   try
@@ -31,22 +34,24 @@ share = (name) ->
       name: name
       image: img
   , (err, data) ->
-
-    console.log err
-    console.log data
+    if err then console.error err
     data = JSON.parse(data.content)
     Session.set 'link', data.data.link
+
 Template.image.image = ->
   return 'data:image/jpeg;base64,' + Session.get('image')
+
 Template.give_link.url = ->
   if not Session.get('link') then return 'Share'
   return Session.get('link')
+
 Template.main.start = ->
   Session.get('start')
-Meteor.Router.add({
+
+Meteor.Router.add
   'tests' : 'tests'
   '/': 'main'
-})
+
 Template.grab_link.events
   "click .submit": (e)->
     e.preventDefault()
