@@ -1,24 +1,19 @@
 Meteor.startup ->
-  id = Session.get('id')
-  query = Images.findOne({images_id: id})
-  query.observe
-    added: ->
-      pull_image_from_db(id)
+  Images.find({}).observe
+    added: (document) ->
+      render_image(document)
 
-get_image_from_url = (url) ->
+grab_image = (url) ->
   id = url.split('/').pop()
   Session.set('id', id)
   Meteor.call 'get_image', url, id
 
-pull_image_from_db = (id) ->
-  Session.set('start', true)
-  Meteor.call 'pull_image', id, (error, result) ->
-    if error then console.error error
-    Session.set('image', result)
-
-image_to_canvas = () ->
+render_image = (document)->
+  image = Meteor.render ->
+    '<image src="data:image/jpeg;base64,'+document.jpeg+'" id="image">'
+  window.document.body.appendChild(image)
   window.canvas = new fabric.Canvas 'c'
-  imgElement = document.getElementById 'image'
+  imgElement = window.document.getElementById 'image'
   imgInstance = new fabric.Image imgElement,
     top: $('img').height() / 2
     left: $('img').width() / 2
@@ -45,33 +40,21 @@ share = (name) ->
     data = JSON.parse(data.content)
     Session.set 'link', data.data.link
 
-Template.image.image = ->
-  return 'data:image/jpeg;base64,' + Session.get('image')
-
 Template.give_link.url = ->
   if not Session.get('link') then return 'Share'
   return Session.get('link')
-
-Template.main.start = ->
-  Session.get('start')
 
 Meteor.Router.add
   'tests' : 'tests'
   '/': 'main'
 
 Template.grab_link.events
-  "click .submit": (e)->
+  "click .deface": (e)->
     e.preventDefault()
-    get_image_from_url $('.url').val()
-  "click .erase": (e) ->
-    e.preventDefault()
-    Meteor.call 'remove_images'
-  "click .preview": (e) ->
-    e.preventDefault()
-    pull_image_from_db Session.get('id')
-  "click .deface": (e) ->
-    e.preventDefault()
-    image_to_canvas()
+    grab_image $('.url').val()
   "click .share": (e) ->
     e.preventDefault()
     share()
+  "click .erase": (e) ->
+    e.preventDefault()
+    Meteor.call 'remove_images'

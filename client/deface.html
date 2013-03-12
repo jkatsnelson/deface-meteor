@@ -11,17 +11,16 @@
 		<div class="row-fluid">
 			<h1>Defacebook</h1>
 			<div class="row-fluid">
-				{{#if start}}
+				<div class="span9">
 					{{#constant}}
 		  			{{> canvas}}
 		  		{{/constant}}
-				{{/if}}
-				<div class="span2">
+				</div>
+				<div class="span3">
 					{{> grab_link}}
 					{{> give_link}}
 				</div>
 	  	</div>
-			{{>image}}
   	</div>
 	</div>
 </template>
@@ -33,11 +32,8 @@
 </template>
 
 <template name="grab_link">
-	<form class="url_input">
 	<input type="text"class="span12 url" placeholder="Put your url in here">
-	<button class="btn-primary submit">Submit</button>
-  <button class="btn-primary preview">Preview</button>
-  <button class="btn-primary deface">Deface</button>
+	<button class="btn-primary Deface">Deface</button>
 	<button class="btn-primary erase">Erase</button>
 	<button class="btn-primary share">Share</button>
 </form>
@@ -51,8 +47,8 @@
 </template>
 
 <template name="canvas">
-  <canvas id="c" class="span10"></canvas>
-</template>
-<template name ="image">
-  <image src={{image}} id="image">
+  <canvas id="c"></canvas>
+	{{#if image}}
+	  {{image_to_canvas}}
+	{{/if}}
 </template>
