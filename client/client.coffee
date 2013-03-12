@@ -9,63 +9,59 @@ image_to_canvas = () ->
   window.canvas.setWidth($('img').width())
   window.canvas.setHeight($('img').height())
 
-share = ->
+share = (name) ->
+  if not name then name is Session.get('id')
   try
     img = window.canvas.toDataURL("image/jpeg", 0.9).split(",")[1]
   catch e
     img = window.canvas.toDataURL().split(",")[1]
-  
-  # open the popup in the click handler so it will not be blocked
-  w = window.open()
-  w.document.write "Uploading..."
-  
-  # upload to imgur using jquery/CORS
-  # https://developer.mozilla.org/En/HTTP_access_control
-  
-  # get your key here, quick and fast http://imgur.com/register/api_anon
-  Meteor.http.post "http://api.imgur.com/2/upload.json",
+  Meteor.http.post "https://api.imgur.com/3/image",
+    headers:
+      'Authorization': 'Client-ID d838931eecf2cf8'
     data:
       type: "base64"
-      key: "3581999bd2d6f55b7feb8e94724d9944"
-      name: "neon.jpg"
-      title: "test title"
-      caption: "test caption"
+      name: name
       image: img
-    dataType: "json"
-  ).success((data) ->
-    w.location.href = data["upload"]["links"]["imgur_page"]
-  ).error ->
-    alert "Could not reach api.imgur.com. Sorry :("
-    w.close()
- 
-  
+  , (err, data) ->
+    console.log err
+    console.log data
+    data = JSON.parse(data.content)
+    Session.set 'link', data.data.link
+
+get_image_from_url = (url) ->
+  id = url.split('/').pop()
+  Session.set('id', id)
+  Meteor.call 'get_image', url, id
+
+pull_image_from_db = (id) ->
+  Meteor.call 'pull_image', id, (error, result) ->
+    if error then console.error error
+    Session.set('image', result)
+
 Template.image.image = ->
   return 'data:image/jpeg;base64,' + Session.get('image')
+Template.give_link.url = ->
+  if not Session.get('link') then return 'Share'
+  return Session.get('link')
 
 Meteor.Router.add({
   'tests' : 'tests'
   '/': 'main'
 })
 
-get_image_from_url = (url) ->
-  Meteor.call 'get_image', url
-
-pull_image_from_db = (id) ->
-  Session.set('id', id)
-  Meteor.call 'pull_image', id, (error, result) ->
-    if error then console.error error
-    Session.set('image', result)
-
 Template.grab_link.events
   "click .submit": (e)->
     e.preventDefault()
-    get_image_from_url 'http://i.imgur.com/6F7JytV.jpg'
+    get_image_from_url $('.url').val()
   "click .erase": (e) ->
     e.preventDefault()
     Meteor.call 'remove_images'
   "click .preview": (e) ->
     e.preventDefault()
-    pull_image_from_db('6F7JytV.jpg')
+    pull_image_from_db Session.get('id')
   "click .deface": (e) ->
     e.preventDefault()
     image_to_canvas()
+  "click .share": (e) ->
+    e.preventDefault()
+    share()

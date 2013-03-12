@@ -12,8 +12,8 @@
 			<h1>Defacebook</h1>
 			<div class="row-fluid">
 				<div class="span2">
-					{{> give_link}}
 					{{> grab_link}}
+					{{> give_link}}
 				</div>
 				<div class="span10">
 					{{#constant}}
@@ -34,11 +34,12 @@
 
 <template name="grab_link">
 	<form class="url_input">
-	<input type="text"class="span12" placeholder="Put your url in here">
+	<input type="text"class="span12 url" placeholder="Put your url in here">
 	<button class="btn-primary submit">Submit</button>
   <button class="btn-primary preview">Preview</button>
   <button class="btn-primary deface">Deface</button>
 	<button class="btn-primary erase">Erase</button>
+	<button class="btn-primary share">Share</button>
 </form>
 </template>
 
@@ -46,8 +47,6 @@
 	<form class="url_output">
 	<label class="url label">Output URL to image</label>
 	<input type="text" value={{url}}>
-	<button type="submit" class="btn give_me">Give me</button>
-	<div>{{url}} wat</div>
 	</form>
 </template>
 

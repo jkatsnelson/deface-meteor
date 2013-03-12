@@ -7,8 +7,7 @@ modulePath = base + (if isBundle then '/bundle/static' else '/public') + '/node_
 request = require(modulePath + '/request')
 
 Meteor.methods
-	get_image: (url) ->
-		id = url.split('/').pop()
+	get_image: (url, id) ->
 		Images.insert({image_id: id})
 		options =
 			url: url
