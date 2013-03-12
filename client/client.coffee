@@ -10,7 +10,8 @@ image_to_canvas = () ->
   window.canvas.setHeight($('img').height())
 
 share = (title, caption) ->
-  api = new imgur.Api('7bbc2cfc903049a0ac43c811affaa9978bf3e4ef')
+  
+  
 Template.image.image = ->
   return 'data:image/jpeg;base64,' + Session.get('image')
 
