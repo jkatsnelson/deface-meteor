@@ -8,9 +8,11 @@ request = require(modulePath + '/request')
 
 Meteor.methods
 	get_image: (url, id) ->
+		console.log url
 		options =
 			url: url
 			encoding: null
+			uri: url
 		request.get options, (error, result, body) ->
 			if error then return console.error error
 			jpeg = body.toString('base64')

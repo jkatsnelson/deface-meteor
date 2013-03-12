@@ -8,6 +8,7 @@ grab_image = (url) ->
   Meteor.call 'get_image', url, id
 
 render_image = (document)->
+  console.log document
   image = Meteor.render ->
     '<image src="data:image/jpeg;base64,'+document.jpeg+'" id="image">'
   $('#image').remove()
@@ -40,7 +41,7 @@ share = (name) ->
     data = JSON.parse(data.content)
     Session.set 'link', data.data.link
 
-Template.give_link.url = ->
+Template.menu.url = ->
   if not Session.get('link') then return 'Share'
   return Session.get('link')
 
@@ -48,7 +49,7 @@ Meteor.Router.add
   'tests' : 'tests'
   '/': 'main'
 
-Template.grab_link.events
+Template.menu.events
   "click .deface": (e)->
     e.preventDefault()
     grab_image $('.url').val()
