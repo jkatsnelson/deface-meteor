@@ -19,7 +19,6 @@ render_image = (document)->
     top: $('img').height() / 2
     left: $('img').width() / 2
   window.canvas.add(imgInstance)
-  window.canvas.isDrawingMode = true
   window.canvas.setWidth($('img').width())
   window.canvas.setHeight($('img').height())
 
@@ -48,7 +47,14 @@ Template.menu.url = ->
 Meteor.Router.add
   'tests' : 'tests'
   '/': 'main'
-
+Template.fabric.events
+  'click .draw': (e)->
+    e.preventDefault()
+    if window.canvas.isDrawingMode then window.canvas.isDrawingMode = false
+    else window.canvas.isDrawingMode = true
+  'click .cat': (e)->
+    e.preventDefault()
+    cat = new fabric.Image
 Template.menu.events
   "click .deface": (e)->
     e.preventDefault()
