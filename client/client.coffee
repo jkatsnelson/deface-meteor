@@ -9,8 +9,35 @@ image_to_canvas = () ->
   window.canvas.setWidth($('img').width())
   window.canvas.setHeight($('img').height())
 
-share = (title, caption) ->
+share = ->
+  try
+    img = window.canvas.toDataURL("image/jpeg", 0.9).split(",")[1]
+  catch e
+    img = window.canvas.toDataURL().split(",")[1]
   
+  # open the popup in the click handler so it will not be blocked
+  w = window.open()
+  w.document.write "Uploading..."
+  
+  # upload to imgur using jquery/CORS
+  # https://developer.mozilla.org/En/HTTP_access_control
+  
+  # get your key here, quick and fast http://imgur.com/register/api_anon
+  Meteor.http.post "http://api.imgur.com/2/upload.json",
+    data:
+      type: "base64"
+      key: "3581999bd2d6f55b7feb8e94724d9944"
+      name: "neon.jpg"
+      title: "test title"
+      caption: "test caption"
+      image: img
+    dataType: "json"
+  ).success((data) ->
+    w.location.href = data["upload"]["links"]["imgur_page"]
+  ).error ->
+    alert "Could not reach api.imgur.com. Sorry :("
+    w.close()
+ 
   
 Template.image.image = ->
   return 'data:image/jpeg;base64,' + Session.get('image')
