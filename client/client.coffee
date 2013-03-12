@@ -1,3 +1,10 @@
+Meteor.startup ->
+  id = Session.get('id')
+  query = Images.findOne({images_id: id})
+  query.observe
+    added: ->
+      pull_image_from_db(id)
+
 get_image_from_url = (url) ->
   id = url.split('/').pop()
   Session.set('id', id)
