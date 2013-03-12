@@ -2,8 +2,8 @@ image_to_canvas = () ->
   window.canvas = new fabric.Canvas 'c'
   imgElement = document.getElementById 'image'
   imgInstance = new fabric.Image imgElement,
-    left: 464
-    top: 384
+    top: 172
+    left: 110
   window.canvas.add(imgInstance)
   window.canvas.isDrawingMode = true
   window.canvas.setWidth($('img').width())
