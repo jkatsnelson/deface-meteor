@@ -2,8 +2,8 @@ image_to_canvas = () ->
   window.canvas = new fabric.Canvas 'c'
   imgElement = document.getElementById 'image'
   imgInstance = new fabric.Image imgElement,
-    top: 172
-    left: 110
+    top: $('img').height() / 2
+    left: $('img').width() / 2
   window.canvas.add(imgInstance)
   window.canvas.isDrawingMode = true
   window.canvas.setWidth($('img').width())
@@ -27,13 +27,13 @@ share = (name) ->
     console.log data
     data = JSON.parse(data.content)
     Session.set 'link', data.data.link
-
 get_image_from_url = (url) ->
   id = url.split('/').pop()
   Session.set('id', id)
   Meteor.call 'get_image', url, id
 
 pull_image_from_db = (id) ->
+  Session.set('start', true)
   Meteor.call 'pull_image', id, (error, result) ->
     if error then console.error error
     Session.set('image', result)
@@ -43,7 +43,8 @@ Template.image.image = ->
 Template.give_link.url = ->
   if not Session.get('link') then return 'Share'
   return Session.get('link')
-
+Template.main.start = ->
+  Session.get('start')
 Meteor.Router.add({
   'tests' : 'tests'
   '/': 'main'

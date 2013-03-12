@@ -11,11 +11,11 @@
 		<div class="row-fluid">
 			<h1>Defacebook</h1>
 			<div class="row-fluid">
-				<div class="span10">
+				{{#if start}}
 					{{#constant}}
 		  			{{> canvas}}
 		  		{{/constant}}
-		  	</div>
+				{{/if}}
 				<div class="span2">
 					{{> grab_link}}
 					{{> give_link}}
@@ -51,7 +51,7 @@
 </template>
 
 <template name="canvas">
-  <canvas id="c"></canvas>
+  <canvas id="c" class="span10"></canvas>
 </template>
 <template name ="image">
   <image src={{image}} id="image">
