@@ -14,11 +14,12 @@ Meteor.methods
 			encoding: null
 		request.get options, (error, result, body) ->
 			if error then return console.error error
-			Fiber(->
+			Fiber ->
 				Images.update({image_id: id}, {image_id: id, jpeg: body})
-			).run()
+			.run()
 	pull_image: (id) ->
 		image = Images.findOne({image_id: id}).jpeg.buffer
 		return image.toString('base64')
 	remove_images: () ->
 		Images.remove({})
+	add_image: (id, body) ->

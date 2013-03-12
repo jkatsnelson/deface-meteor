@@ -1,12 +1,10 @@
 get_image_from_url = (url) ->
   id = url.split('/').pop()
   Session.set('id', id)
-  Meteor.call 'get_image', url, id
-pull_image_from_db = (id) ->
-  Session.set('start', true)
-  Meteor.call 'pull_image', id, (error, result) ->
+  Meteor.call 'get_image', url, id, (error, result) ->
     if error then console.error error
-    Session.set('image', result)
+    Session.set('image', result)    
+    Session.set('start', true)
 image_to_canvas = () ->
   window.canvas = new fabric.Canvas 'c'
   imgElement = document.getElementById 'image'
