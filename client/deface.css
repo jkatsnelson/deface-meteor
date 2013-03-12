@@ -5,8 +5,6 @@ img {
 .menu_items {
 	float: left;
 }
-canvas {
-}
 .canvas {
 	overflow: scroll;
 	height: 600px;

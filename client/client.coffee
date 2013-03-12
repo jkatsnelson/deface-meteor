@@ -52,7 +52,7 @@ Meteor.Router.add
 Template.menu.events
   "click .deface": (e)->
     e.preventDefault()
-    grab_image $('.url').val()
+    grab_image $('#url').val()
   "click .share": (e) ->
     e.preventDefault()
     share()
