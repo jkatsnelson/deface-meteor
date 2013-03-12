@@ -1,14 +1,16 @@
 image_to_canvas = () ->
-  canvas = new fabric.Canvas 'c'
+  window.canvas = new fabric.Canvas 'c'
   imgElement = document.getElementById 'image'
   imgInstance = new fabric.Image imgElement,
     left: 464
     top: 384
-  canvas.add(imgInstance)
-  canvas.isDrawingMode = true
-  canvas.setWidth($('img').width())
-  canvas.setHeight($('img').height())
+  window.canvas.add(imgInstance)
+  window.canvas.isDrawingMode = true
+  window.canvas.setWidth($('img').width())
+  window.canvas.setHeight($('img').height())
 
+share = (title, caption) ->
+  api = new imgur.Api('7bbc2cfc903049a0ac43c811affaa9978bf3e4ef')
 Template.image.image = ->
   return 'data:image/jpeg;base64,' + Session.get('image')
 
@@ -21,6 +23,7 @@ get_image_from_url = (url) ->
   Meteor.call 'get_image', url
 
 pull_image_from_db = (id) ->
+  Session.set('id', id)
   Meteor.call 'pull_image', id, (error, result) ->
     if error then console.error error
     Session.set('image', result)

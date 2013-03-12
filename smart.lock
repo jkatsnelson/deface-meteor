@@ -7,7 +7,8 @@
   "dependencies": {
     "basePackages": {
       "mocha-web": {},
-      "router": {}
+      "router": {},
+      "imgur": {}
     },
     "packages": {
       "mocha-web": {
@@ -19,6 +20,11 @@
         "git": "https://github.com/tmeasday/meteor-router.git",
         "tag": "v0.4.2",
         "commit": "82d2895847502b4025370523dba60d597cff4772"
+      },
+      "imgur": {
+        "git": "https://github.com/grmlin/meteor-imgur.git",
+        "tag": "v0.1.0",
+        "commit": "0781b66ce15a4d9afaed98455761a5b7a2104125"
       },
       "page-js-ie-support": {
         "git": "https://github.com/tmeasday/meteor-page-js-ie-support.git",
