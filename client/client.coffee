@@ -2,7 +2,7 @@ grab_image = (url) ->
   id = url.split('/').pop()
   watch_images = Images.find({image_id: id}).observe
     added: (document) ->
-      render_image(document)
+      render_image document
       watch_images.stop()
   Session.set('id', id)
   Meteor.call 'get_image', url, id
@@ -10,7 +10,7 @@ grab_image = (url) ->
 render_image = (document)->
   image = Meteor.render ->
     '<image src="data:image/jpeg;base64,'+document.jpeg+'" id="image">'
-  console.log image
+  $('#image').remove()
   window.document.body.appendChild(image)
   window.canvas = new fabric.Canvas 'c'
   imgElement = window.document.getElementById 'image'
