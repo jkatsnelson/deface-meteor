@@ -13,15 +13,9 @@ render_image = (document)->
     '<image src="data:image/jpeg;base64,'+document.jpeg+'" id="image">'
   $('#image').remove()
   window.document.body.appendChild(image)
-  window.canvas = new fabric.Canvas 'c'
+  window.canvas = new createjs.Stage 'c'
   imgElement = window.document.getElementById 'image'
-  imgInstance = new fabric.Image imgElement,
-    top: $('img').height() / 2
-    left: $('img').width() / 2
-  window.canvas.add(imgInstance)
-  window.canvas.isDrawingMode = true
-  window.canvas.setWidth($('img').width())
-  window.canvas.setHeight($('img').height())
+  imgInstance = new createjs.Bitmap imgElement
 
 share = (name) ->
   if not name then name is Session.get('id')

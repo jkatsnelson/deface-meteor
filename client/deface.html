@@ -1,6 +1,7 @@
 <head>
   <title>Defacebook</title>
   <script src="fabric.js"></script>
+  <script src="http://code.createjs.com/easeljs-0.6.0.min.js"></script>
 </head>
 
 <body>
@@ -20,6 +21,7 @@
 				</div>
 				<div class="span4">
 					{{> menu}}
+					{{> fabric}}
 				</div>
 	  	</div>
   	</div>
@@ -45,6 +47,9 @@
 	</div>
 	</div>
 </form>
+</template>
+<template name="fabric">
+	<button class="btn cat" type="button">Add Cat</button>
 </template>
 
 <template name="canvas">
