@@ -6,7 +6,7 @@ grab_image = (url) ->
   watch_images = Images.find({image_id: id}).observe
     added: (document) ->
       render_image document
-      watch_images.stop()
+      setTimeout((->watch_images.stop()), 0)
   Session.set('id', id)
   Meteor.call 'get_image', url, id
 

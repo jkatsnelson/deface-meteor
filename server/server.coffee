@@ -12,10 +12,10 @@ Meteor.methods
 		options =
 			url: url
 			encoding: null
-			uri: url
 		request.get options, (error, result, body) ->
 			if error then return console.error error
 			jpeg = body.toString('base64')
+			console.log 'made a get request'
 			Fiber ->
 				Images.insert {image_id: id, jpeg: jpeg}
 			.run()
