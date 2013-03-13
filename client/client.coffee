@@ -1,3 +1,6 @@
+Meteor.startup ->
+  Session.set('draw_mode', 'Draw mode is off')
+
 grab_image = (url) ->
   id = url.split('/').pop()
   watch_images = Images.find({image_id: id}).observe
@@ -44,17 +47,38 @@ Template.menu.url = ->
   if not Session.get('link') then return 'Share'
   return Session.get('link')
 
+Template.fabric.draw_mode = ->
+  Session.get('draw_mode')
 Meteor.Router.add
   'tests' : 'tests'
   '/': 'main'
 Template.fabric.events
   'click .draw': (e)->
     e.preventDefault()
-    if window.canvas.isDrawingMode then window.canvas.isDrawingMode = false
-    else window.canvas.isDrawingMode = true
-  'click .cat': (e)->
+    canvas = window.canvas
+    if canvas.isDrawingMode
+      canvas.isDrawingMode = false
+      Session.set('draw_mode', 'Draw mode is off.')
+    else
+      canvas.isDrawingMode = true
+      Session.set('draw_mode', 'Draw mode is on.')
+  'change .line_width': (e)->
     e.preventDefault()
-    cat = new fabric.Image
+    window.canvas.freeDrawingLineWidth = e.target.value
+  'click .color': (e)->
+    e.preventDefault()
+    color = e.srcElement.innerText
+    window.canvas.freeDrawingColor = color
+  'click .black_cat': (e)->
+    e.preventDefault()
+    cat = new fabric.loadSVGFromURL 'black_cat.svg', (objects, options) ->
+      shape = fabric.util.groupSVGElements objects, options
+      window.canvas.add shape.scale 0.8
+  'click .octocat': (e)->
+    e.preventDefault()
+    cat = new fabric.loadSVGFromURL 'git-cat.svg', (objects, options) ->
+      shape = fabric.util.groupSVGElements objects, options
+      window.canvas.add shape.scale 0.6
 Template.menu.events
   "click .deface": (e)->
     e.preventDefault()

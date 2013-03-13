@@ -49,6 +49,35 @@
 </template>
 <template name="fabric">
 	<button class="btn draw" type="button">Toggle draw mode</button>
+	<span>{{draw_mode}}</span></br>
+	<div  class="drop10">
+		<label class="label">Line Width</label></br>
+		<input class="line_width" type="range" min="1" max="100">
+		<div class="btn-group drop10">
+		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+			Colors
+			<span class="caret"></span>
+		</a>
+		<ul class="dropdown-menu">
+			<li><a href='#' class="color">Red</a></li>
+			<li><a href='#' class="color">Yellow</a></li>
+			<li><a href='#' class="color">Green</a></li>
+			<li><a href='#' class="color">Blue</a></li>
+			<li><a href='#' class="color">Black</a></li>
+			<li><a href='#' class="color">Grey</a></li>
+		</ul>
+	</div>
+	</div>
+	<div class="btn-group drop10">
+		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+			Cats
+			<span class="caret"></span>
+		</a>
+		<ul class="dropdown-menu">
+			<li><a href='#' class="octocat">Octocat</a></li>
+			<li><a href='#' class="black_cat">Black Cat</a></li>
+		</ul>
+	</div>
 </template>
 
 <template name="canvas">
