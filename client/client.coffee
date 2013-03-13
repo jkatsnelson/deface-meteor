@@ -1,31 +1,35 @@
 Meteor.startup ->
   Session.set('draw_mode', 'Draw mode is off')
+  window.canvas = new fabric.Canvas 'c'
+grab_image = (url, id) ->
+  Meteor.call 'get_image', url, id
 
-grab_image = (url) ->
-  id = url.split('/').pop()
-  watch_images = Images.find({success: id}).observe
+  query = Images.find success: id
+  watch_images = query.observeChanges
     added: (document) ->
-      image = Images.findOne({image_id: document.success})
-      render_image image
+      console.log document
+      image = Images.find({image_id: Session.get 'id'})
+      render_image image.fetch()
       setTimeout ->
         watch_images.stop()
       , 0
-  Session.set('id', id)
-  Meteor.call 'get_image', url, id
 
-render_image = (document)->
+render_image = (document) ->
+  document = document[0]
+  $('#image').remove()
+  window.canvas.clear()
   image = Meteor.render ->
     '<image src="data:image/jpeg;base64,'+document.jpeg+'" id="image">'
-  $('#image').remove()
   window.document.body.appendChild(image)
-  window.canvas = new fabric.Canvas 'c'
-  imgElement = window.document.getElementById 'image'
-  imgInstance = new fabric.Image imgElement,
-    top: $('img').height() / 2
-    left: $('img').width() / 2
-  window.canvas.add imgInstance
-  window.canvas.setWidth($('img').width())
-  window.canvas.setHeight($('img').height())
+  setTimeout ->
+    imgElement = window.document.getElementById 'image'
+    imgInstance = new fabric.Image imgElement,
+      top: $('img').height() / 2
+      left: $('img').width() / 2
+    window.canvas.add imgInstance
+    window.canvas.setWidth($('img').width())
+    window.canvas.setHeight($('img').height())
+  , 2000
 
 share = (name) ->
   if not name then name is Session.get('id')
@@ -51,9 +55,25 @@ Template.menu.url = ->
 
 Template.fabric.draw_mode = ->
   Session.get('draw_mode')
+
 Meteor.Router.add
   'tests' : 'tests'
   '/': 'main'
+
+Template.menu.events
+  "click .deface": (e)->
+    e.preventDefault()
+    url = $('#url').val()
+    id = url.split('/').pop()
+    Session.set('id', id)
+    grab_image url, id
+  "click .share": (e) ->
+    e.preventDefault()
+    share()
+  "click .erase": (e) ->
+    e.preventDefault()
+    Meteor.call 'remove_images'
+
 Template.fabric.events
   'click .draw': (e)->
     e.preventDefault()
@@ -81,13 +101,3 @@ Template.fabric.events
     cat = new fabric.loadSVGFromURL 'git-cat.svg', (objects, options) ->
       shape = fabric.util.groupSVGElements objects, options
       window.canvas.add shape.scale 0.6
-Template.menu.events
-  "click .deface": (e)->
-    e.preventDefault()
-    grab_image $('#url').val()
-  "click .share": (e) ->
-    e.preventDefault()
-    share()
-  "click .erase": (e) ->
-    e.preventDefault()
-    Meteor.call 'remove_images'
