@@ -7,13 +7,12 @@ grab_image = (url, id) ->
     render_image result
 
 render_image = (image) ->
-  console.log image
   $('#image').remove()
   window.canvas.clear()
   image = Meteor.render ->
     '<image src="data:image/jpeg;base64,'+image+'" id="image">'
-  window.document.body.appendChild(image)
   setTimeout ->
+    window.document.body.appendChild(image)
     imgElement = window.document.getElementById 'image'
     imgInstance = new fabric.Image imgElement,
       top: $('img').height() / 2
@@ -21,7 +20,7 @@ render_image = (image) ->
     window.canvas.add imgInstance
     window.canvas.setWidth($('img').width())
     window.canvas.setHeight($('img').height())
-  , 2000
+  , 1
 
 share = (name) ->
   if not name then name is Session.get('id')
@@ -62,9 +61,6 @@ Template.menu.events
   "click .share": (e) ->
     e.preventDefault()
     share()
-  "click .erase": (e) ->
-    e.preventDefault()
-    Meteor.call 'remove_images'
 
 Template.fabric.events
   'click .draw': (e)->

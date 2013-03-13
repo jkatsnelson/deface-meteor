@@ -20,6 +20,3 @@ Meteor.methods
 			fut.ret jpeg
 			console.log 'made a get request'
 		return fut.wait()
-	remove_images: () ->
-		console.log 'eraseyrasey'
-		Images.remove({})
