@@ -8,8 +8,10 @@
 </body>
 <template name="main">
 	<div class="container-fluid">
-		<div class="row-fluid">
-			<h1>Defacebook</h1>
+		{{#unless image}}
+			{{>hero_menu}}
+		{{/unless}}
+		{{#if image}}
 			<div class="row-fluid">
 				<div class="span6">
 					<div class="canvas well">
@@ -27,15 +29,21 @@
 					</div>
 				</div>
 	  	</div>
-  	</div>
+  	{{/if}}
 	</div>
 </template>
 
-<template name="tests">
-	<div>
-		{{> mochaTestReport}}
+<template name="hero_menu">
+	<div class="hero-unit well">
+		<h1 class="text-center">Who do you want to deface?</h1>
+		<h3 class="text-center">Place a url to any jpg and get to work.</h3>
+		<div class="row-fluid">
+			<input class="url span8 offset2" type="text">
+			<button class="btn deface" type="button">Deface!</button>
+		</div>
 	</div>
 </template>
+
 <template name="menu">
 	<div class="row-fluid deface_menu">
 		<label class="url label">Input URL to image</label></br>
@@ -50,6 +58,7 @@
 	</div>
 </form>
 </template>
+
 <template name="fabric">
 	<button class="btn draw" type="button">Toggle draw mode</button>
 	<span>{{draw_mode}}</span></br>
@@ -88,4 +97,10 @@
 	{{#if image}}
 	  {{image_to_canvas}}
 	{{/if}}
+</template>
+
+<template name="tests">
+	<div>
+		{{> mochaTestReport}}
+	</div>
 </template>

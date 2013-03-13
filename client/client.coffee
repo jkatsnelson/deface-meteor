@@ -51,8 +51,16 @@ Meteor.Router.add
   'tests' : 'tests'
   '/': 'main'
 
+Template.hero_menu.events
+  "click .deface": (e) ->
+    e.preventDefault()
+    url = $('#url').val()
+    id = url.split('/').pop()
+    Session.set('id', id)
+    grab_image url, id
+
 Template.menu.events
-  "click .deface": (e)->
+  "click .deface": (e) ->
     e.preventDefault()
     url = $('#url').val()
     id = url.split('/').pop()
