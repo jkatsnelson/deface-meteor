@@ -3,10 +3,15 @@ Meteor.startup ->
 
 grab_image = (url) ->
   id = url.split('/').pop()
-  watch_images = Images.find({image_id: id}).observe
+  watch_images = Images.find({success: id}).observe
     added: (document) ->
-      render_image document
-      setTimeout((->watch_images.stop()), 0)
+      image = Images.findOne({image_id: document.success})
+      setTimeout ->
+        render_image image
+      , 3000
+      setTimeout ->
+        watch_images.stop()
+      , 0
   Session.set('id', id)
   Meteor.call 'get_image', url, id
 
@@ -21,7 +26,7 @@ render_image = (document)->
   imgInstance = new fabric.Image imgElement,
     top: $('img').height() / 2
     left: $('img').width() / 2
-  window.canvas.add(imgInstance)
+  window.canvas.add imgInstance
   window.canvas.setWidth($('img').width())
   window.canvas.setHeight($('img').height())
 
