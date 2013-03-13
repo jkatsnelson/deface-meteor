@@ -2,24 +2,16 @@ Meteor.startup ->
   Session.set('draw_mode', 'Draw mode is off')
   window.canvas = new fabric.Canvas 'c'
 grab_image = (url, id) ->
-  Meteor.call 'get_image', url, id
+  Meteor.call 'get_image', url, id, (err, result) ->
+    if err then console.error err
+    render_image result
 
-  query = Images.find success: id
-  watch_images = query.observeChanges
-    added: (document) ->
-      console.log document
-      image = Images.find({image_id: Session.get 'id'})
-      render_image image.fetch()
-      setTimeout ->
-        watch_images.stop()
-      , 0
-
-render_image = (document) ->
-  document = document[0]
+render_image = (image) ->
+  console.log image
   $('#image').remove()
   window.canvas.clear()
   image = Meteor.render ->
-    '<image src="data:image/jpeg;base64,'+document.jpeg+'" id="image">'
+    '<image src="data:image/jpeg;base64,'+image+'" id="image">'
   window.document.body.appendChild(image)
   setTimeout ->
     imgElement = window.document.getElementById 'image'
