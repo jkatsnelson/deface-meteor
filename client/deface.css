@@ -1,13 +1,12 @@
-/*img {
+img {
 	display: none;
 	position: absolute;
-}*/
+}
 .menu_items {
 	float: left;
 }
 .canvas {
 	overflow: scroll;
-	height: 600px;
 }
 .deface_menu {
 	margin-bottom: 20px;
@@ -17,7 +16,4 @@
 }
 .drop50 {
 	margin-top: 50px;
-}
-.url {
-	margin: auto;
 }
