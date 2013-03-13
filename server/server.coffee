@@ -18,7 +18,6 @@ Meteor.methods
 			console.log 'made a get request'
 			Fiber ->
 				Images.insert {image_id: id, jpeg: jpeg}, (err, nastyid) ->
-					console.log Images.find({image_id: id})
 					Images.insert {success: id}
 			.run()
 	remove_images: () ->

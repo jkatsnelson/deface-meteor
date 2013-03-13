@@ -6,9 +6,7 @@ grab_image = (url) ->
   watch_images = Images.find({success: id}).observe
     added: (document) ->
       image = Images.findOne({image_id: document.success})
-      setTimeout ->
-        render_image image
-      , 3000
+      render_image image
       setTimeout ->
         watch_images.stop()
       , 0
@@ -16,7 +14,6 @@ grab_image = (url) ->
   Meteor.call 'get_image', url, id
 
 render_image = (document)->
-  console.log document
   image = Meteor.render ->
     '<image src="data:image/jpeg;base64,'+document.jpeg+'" id="image">'
   $('#image').remove()

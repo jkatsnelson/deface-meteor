@@ -12,3 +12,4 @@ mocha-web
 router
 http
 force-ssl
+jquery
