@@ -23,9 +23,7 @@
 					{{> cats}}
 				</div>
 				<div class="span2 offset1">
-					<div class="row-fluid">
 					{{> menu}}
-					</div>
 				</div>
 	  	</div>
   	{{/if}}
@@ -46,15 +44,16 @@
 </template>
 
 <template name="menu">
-	<div class="row-fluid">
-		<label class="url label">Let your image loose on the world</label></br>
-		<button class="btn share">Share</button>
-		<input type="text" class="span8 drop10" value={{url}}>
-	</div>
 	<div class="row-fluid deface_menu">
 		<label class="url label">Input URL to image</label></br>
-		<input class="span8 drop10"  id="url" type="text" >
+		<input class="span12 drop10"  id="url" type="text" >
 		<button class="btn deface" type="button">Deface!</button>
+	</div>
+	<div class="row-fluid">
+		<div class="well">
+			<button class="btn-large btn-primary share offset2">Share</button>
+			<input type="text" class="span12 drop10" value={{url}}>
+		</div>
 	</div>
 </template>
 
