@@ -1,10 +1,13 @@
 Meteor.startup ->
   Session.set('draw_mode', false)
 
-grab_image = (url, id) ->
-  Meteor.call 'get_image', url, id, (err, result) ->
+grab_image = (url, id, room) ->
+  Meteor.call 'get_image', url, id, room, (err, result) ->
     if err then console.error err
     render_image result
+
+grab_room = (room) ->
+
 
 render_image = (image) ->
   window.canvas = new fabric.Canvas 'c'
@@ -22,7 +25,6 @@ render_image = (image) ->
     window.canvas.setWidth($('img').width())
     window.canvas.setHeight($('img').height())
   , 1
-
 share = (name) ->
   if not name then name is Session.get('id')
   try
@@ -63,12 +65,18 @@ Meteor.Router.add
 
 Template.hero_menu.events
   "click .deface": (e) ->
-    Session.set('image', true)
     e.preventDefault()
+    Session.set('image', true)
+    room = $('.room').val()
     url = $('.url').val()
     id = url.split('/').pop()
     Session.set('id', id)
-    grab_image url, id
+    grab_image url, id, room
+  "click .room_button": (e) ->
+    e.preventDefault()
+    room = $('.room').val()
+    Session.set('room', room)
+    grab_room room
 
 Template.menu.events
   "click .deface": (e) ->

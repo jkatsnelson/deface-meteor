@@ -8,9 +8,10 @@ modulePath = base + (if isBundle then '/bundle/static' else '/public') + '/node_
 request = require(modulePath + '/request')
 
 Meteor.methods
-	get_image: (url, id) ->
+	get_image: (url, id, room) ->
 		fut = new Future()
 		console.log url
+		if room then Images.insert {room: room, url: url}
 		options =
 			url: url
 			encoding: null
