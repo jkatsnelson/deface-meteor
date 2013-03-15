@@ -68,6 +68,19 @@
 	</div>
 </template>
 
+<template name="canvas">
+	<div class="row-fluid">
+		<h1 class="text-center">Deface them!</h1>
+		<h3 class="text-center">Use your mouse as a paintbrush.</h3>
+		<div class="row-fluid canvas">
+		  <canvas id="c"></canvas>
+			{{#if image}}
+			  {{image_to_canvas}}
+			{{/if}}
+		</div>
+	</div>
+</template>
+
 <template name="draw_button">
 	<div class="row-fluid draw_menu">
 		<h2>Customize</h2>
@@ -114,19 +127,6 @@
 				</ul>
 			</div>
 		</h3>
-	</div>
-</template>
-
-<template name="canvas">
-	<div class="row-fluid">
-		<h1 class="text-center">Deface them!</h1>
-		<h3 class="text-center">Use your mouse as a paintbrush.</h3>
-		<div class="row-fluid canvas">
-		  <canvas id="c"></canvas>
-			{{#if image}}
-			  {{image_to_canvas}}
-			{{/if}}
-		</div>
 	</div>
 </template>
 
