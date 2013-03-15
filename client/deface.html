@@ -18,9 +18,14 @@
 					{{> menu}}
 				</div>
 				<div class="offset1 span6">
-					{{#constant}}
-						{{> canvas}}
-					{{/constant}}
+					{{#if room}}
+						{{> room_canvas}}
+					{{/if}}
+					{{#unless room}}
+						{{#constant}}
+							{{> canvas}}
+						{{/constant}}
+					{{/unless}}
 				</div>
 				<div class="span3 well pull-left">
 					{{> draw_button}}
@@ -79,6 +84,19 @@
 </template>
 
 <template name="canvas">
+	<div class="row-fluid">
+		<h1 class="text-center">Deface them!</h1>
+		<h3 class="text-center">Use your mouse as a paintbrush.</h3>
+		<div class="row-fluid canvas">
+		  <canvas id="c"></canvas>
+			{{#if image}}
+			  {{image_to_canvas}}
+			{{/if}}
+		</div>
+	</div>
+</template>
+
+<template name="room_canvas">
 	<div class="row-fluid">
 		<h1 class="text-center">Deface them!</h1>
 		<h3 class="text-center">Use your mouse as a paintbrush.</h3>

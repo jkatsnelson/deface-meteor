@@ -5,7 +5,6 @@ grab_image = (url, id) ->
 
 grab_room = (room) ->
 
-
 render_image = (image) ->
   window.canvas = new fabric.Canvas 'c'
   $('#image').remove()
@@ -25,6 +24,7 @@ render_image = (image) ->
       Images.insert {id: Session.get('room'), img: window.canvas.toJSON()}
     Session.set('draw_mode', true)
   , 1
+
 share = (name) ->
   Session.set('share_pressed', true)
   if not name then name is Session.get('id')
