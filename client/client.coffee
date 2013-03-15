@@ -21,6 +21,8 @@ render_image = (image) ->
     window.canvas.add imgInstance
     window.canvas.setWidth($('img').width())
     window.canvas.setHeight($('img').height())
+    window.canvas.on 'mouse:up', (options) ->
+      Images.insert {id: Session.get('room'), img: window.canvas.toJSON()}
     Session.set('draw_mode', true)
   , 1
 share = (name) ->
@@ -71,16 +73,15 @@ Meteor.Router.add
 Template.hero_menu.events
   "click .deface": (e) ->
     e.preventDefault()
-    Session.set('image', true)
-    room = $('.room').val()
     url = $('.url').val()
     id = url.split('/').pop()
     Session.set('id', id)
-    grab_image url, id, room
+    Session.set 'image', true
+    Session.set 'room', $('.room').val()
+    grab_image url, id
   "click .room_button": (e) ->
     e.preventDefault()
-    room = $('.room').val()
-    Session.set('room', room)
+    Session.set('room', $('.room').val())
     grab_room room
 
 Template.menu.events
