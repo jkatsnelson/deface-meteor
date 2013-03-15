@@ -24,6 +24,7 @@ render_image = (image) ->
   , 1
 
 share = (name) ->
+  Session.set('share_pressed', true)
   if not name then name is Session.get('id')
   try
     img = window.canvas.toDataURL("image/jpeg", 0.9).split(",")[1]
@@ -44,7 +45,7 @@ share = (name) ->
 Template.main.image = ->
   Session.get('image')
 
-Template.menu.url = ->
+Template.share.url = ->
   if not Session.get('link') then return 'Share'
   return Session.get('link')
 
@@ -56,6 +57,8 @@ Template.draw_menu.draw_mode = ->
     return 'btn btn-large btn-success draw'
   else
     return 'btn btn-large draw btn-inverse'
+Template.share.share_pressed = ->
+  Session.get('share_pressed')
 
 Meteor.Router.add
   'tests' : 'tests'
@@ -77,6 +80,8 @@ Template.menu.events
     id = url.split('/').pop()
     Session.set('id', id)
     grab_image url, id
+
+Template.share.events
   "click .share": (e) ->
     e.preventDefault()
     share()

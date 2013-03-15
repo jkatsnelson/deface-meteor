@@ -15,6 +15,7 @@
 			<div class="row-fluid">
 				<div class="span2">
 					{{> menu}}
+					{{> share}}
 				</div>
 				<div class="offset1 span6">
 					{{#constant}}
@@ -45,12 +46,20 @@
 
 <template name="menu">
 	<div class="row-fluid drop50 deface_menu">
-		<button class="btn-large btn-primary offset2 deface" type="button">Deface!</button>
 		<input class="span12 drop10"  id="url" type="text" placeholder="Input Image URL" >
+		<button class="btn-primary deface" type="button">Deface!</button>
 	</div>
+</template>
+
+<template name="share">
 	<div class="row-fluid">
-		<button class="btn-large btn-primary share offset2">Share</button>
-		<input type="text" class="span12 drop10" value={{url}}>
+		{{#unless share_pressed}}
+			<button class="btn-large btn-primary share offset2 drop50">Share</button>
+		{{/unless}}
+		{{#if share_pressed}}
+			<h5>Your image, generously hosted by imgur: </h5>
+			<input type="text" class="span12 drop10" value={{url}}>
+		{{/if}}
 	</div>
 </template>
 
