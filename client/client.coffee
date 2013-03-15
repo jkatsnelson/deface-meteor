@@ -74,6 +74,8 @@ Template.hero_menu.events
   "click .deface": (e) ->
     e.preventDefault()
     url = $('.url').val()
+    if !url
+      url = 'https://sphotos-a.xx.fbcdn.net/hphotos-prn1/13888_10152626323675160_1043387988_n.jpg'
     id = url.split('/').pop()
     Session.set('id', id)
     Session.set 'image', true
@@ -87,7 +89,9 @@ Template.hero_menu.events
 Template.menu.events
   "click .deface": (e) ->
     e.preventDefault()
-    url = $('#url').val()
+    url = $('.url').val()
+    if !url
+      url = 'https://sphotos-a.xx.fbcdn.net/hphotos-prn1/13888_10152626323675160_1043387988_n.jpg'
     id = url.split('/').pop()
     Session.set('id', id)
     grab_image url, id
