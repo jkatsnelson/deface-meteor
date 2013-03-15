@@ -1,6 +1,3 @@
-Meteor.startup ->
-  Session.set('draw_mode', false)
-
 grab_image = (url, id) ->
   Meteor.call 'get_image', url, id, (err, result) ->
     if err then console.error err
@@ -21,6 +18,7 @@ render_image = (image) ->
     window.canvas.add imgInstance
     window.canvas.setWidth($('img').width())
     window.canvas.setHeight($('img').height())
+    Session.set('draw_mode', true)
   , 1
 
 share = (name) ->
@@ -45,20 +43,24 @@ share = (name) ->
 Template.main.image = ->
   Session.get('image')
 
-Template.share.url = ->
-  if not Session.get('link') then return 'Share'
-  return Session.get('link')
+Template.main.draw_mode = ->
+  if Session.get('draw_mode')
+    if window.canvas
+      window.canvas.isDrawingMode = true
+  else
+    if window.canvas 
+      window.canvas.isDrawingMode = false
 
-Template.draw_menu.status = ->
-  Session.get('draw_mode')
-
-Template.draw_menu.draw_mode = ->
+Template.draw_button.draw_mode = ->
   if Session.get('draw_mode')
     return 'btn btn-large btn-success draw'
   else
     return 'btn btn-large draw btn-inverse'
 Template.share.share_pressed = ->
   Session.get('share_pressed')
+
+Template.share.url = ->
+  Session.get('link')
 
 Meteor.Router.add
   'tests' : 'tests'
@@ -86,32 +88,32 @@ Template.share.events
     e.preventDefault()
     share()
 
-Template.draw_menu.events
+Template.draw_button.events
   'click .draw': (e)->
     e.preventDefault()
-    canvas = window.canvas
-    if canvas.isDrawingMode
-      canvas.isDrawingMode = false
+    if window.canvas.isDrawingMode
       Session.set('draw_mode', false)
     else
-      canvas.isDrawingMode = true
       Session.set('draw_mode', true)
+
+Template.draw_menu.events
   'change .line_width': (e)->
     e.preventDefault()
     window.canvas.freeDrawingLineWidth = e.target.value
   'click .color': (e)->
     e.preventDefault()
-    color = e.srcElement.innerText
-    window.canvas.freeDrawingColor = color
+    window.canvas.freeDrawingColor = e.srcElement.innerText
 
 Template.cats.events
   'click .black_cat': (e)->
     e.preventDefault()
+    Session.set('draw_mode', false)
     cat = new fabric.loadSVGFromURL 'black_cat.svg', (objects, options) ->
       shape = fabric.util.groupSVGElements objects, options
-      window.canvas.add shape.scale 0.8
+      window.canvas.add shape.scale 0.2
   'click .octocat': (e)->
     e.preventDefault()
+    Session.set('draw_mode', false)
     cat = new fabric.loadSVGFromURL 'git-cat.svg', (objects, options) ->
       shape = fabric.util.groupSVGElements objects, options
       window.canvas.add shape.scale 0.6
