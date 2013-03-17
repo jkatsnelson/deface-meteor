@@ -4,30 +4,34 @@ grab_image = (url, id) ->
     render_image result
 
 grab_room = (room) ->
+  Session.set 'room', room
+  Session.set 'canvas', Images.findOne({id: Session.get('room')}).canvas
 
 render_image = (image) ->
-  window.canvas = new fabric.Canvas 'c'
+  canvas = new fabric.Canvas 'c'
   $('#image').remove()
-  window.canvas.clear()
+  canvas.clear()
   image = Meteor.render ->
     '<image src="data:image/jpeg;base64,'+image+'" id="image">'
   setTimeout ->
-    window.document.body.appendChild(image)
+    window.document.body.appendChild image
     imgElement = window.document.getElementById 'image'
     imgInstance = new fabric.Image imgElement,
       top: $('img').height() / 2
       left: $('img').width() / 2
-    window.canvas.add imgInstance
-    window.canvas.setWidth($('img').width())
-    window.canvas.setHeight($('img').height())
-    window.canvas.on 'mouse:up', (options) ->
-      Images.insert {id: Session.get('room'), img: window.canvas.toJSON()}
-    Session.set('draw_mode', true)
+    canvas.add imgInstance
+    canvas.setWidth $('img').width()
+    canvas.setHeight $('img').height()
+    canvas.on 'mouse:up', (options) ->
+      Images.insert {id: Session.get('room'), canvas: Session.get('canvas').toJSON()}
+    Session.set 'draw_mode', true
+    Session.set 'canvas', canvas
   , 1
 
 share = (name) ->
-  Session.set('share_pressed', true)
-  if not name then name is Session.get('id')
+  Session.set 'share_pressed', true
+  if not name then name is Session.get 'id'
+  canvas = Session.get('canvas')
   try
     img = window.canvas.toDataURL("image/jpeg", 0.9).split(",")[1]
   catch e
@@ -44,8 +48,11 @@ share = (name) ->
     data = JSON.parse(data.content)
     Session.set 'link', data.data.link
 
-Template.main.image = ->
-  Session.get('image')
+Template.canvas.canvas = ->
+  Session.get 'canvas'
+
+Template.main.ready = ->
+  Session.get 'ready'
 
 Template.main.draw_mode = ->
   if Session.get('draw_mode')
@@ -56,19 +63,22 @@ Template.main.draw_mode = ->
       window.canvas.isDrawingMode = false
 
 Template.draw_button.draw_mode = ->
-  if Session.get('draw_mode')
+  if Session.get 'draw_mode'
     return 'btn btn-large btn-success draw'
   else
     return 'btn btn-large draw btn-inverse'
+
 Template.share.share_pressed = ->
-  Session.get('share_pressed')
+  Session.get 'share_pressed'
 
 Template.share.url = ->
-  Session.get('link')
+  Session.get 'link'
 
 Meteor.Router.add
   'tests' : 'tests'
   '/': 'main'
+  '/:room': (room) ->
+    grab_room(room)
 
 Template.hero_menu.events
   "click .deface": (e) ->
@@ -77,13 +87,13 @@ Template.hero_menu.events
     if !url
       url = 'https://sphotos-a.xx.fbcdn.net/hphotos-prn1/13888_10152626323675160_1043387988_n.jpg'
     id = url.split('/').pop()
-    Session.set('id', id)
-    Session.set 'image', true
+    Session.set 'id', id
+    Session.set 'ready', true
     Session.set 'room', $('.room').val()
     grab_image url, id
   "click .room_button": (e) ->
     e.preventDefault()
-    Session.set('room', $('.room').val())
+    Session.set 'room', $('.room').val()
     grab_room room
 
 Template.menu.events
@@ -93,7 +103,7 @@ Template.menu.events
     if !url
       url = 'https://sphotos-a.xx.fbcdn.net/hphotos-prn1/13888_10152626323675160_1043387988_n.jpg'
     id = url.split('/').pop()
-    Session.set('id', id)
+    Session.set 'id', id
     grab_image url, id
 
 Template.share.events
@@ -105,9 +115,9 @@ Template.draw_button.events
   'click .draw': (e)->
     e.preventDefault()
     if window.canvas.isDrawingMode
-      Session.set('draw_mode', false)
+      Session.set 'draw_mode', false
     else
-      Session.set('draw_mode', true)
+      Session.set 'draw_mode', true
 
 Template.draw_menu.events
   'change .line_width': (e)->
@@ -120,13 +130,13 @@ Template.draw_menu.events
 Template.cats.events
   'click .black_cat': (e)->
     e.preventDefault()
-    Session.set('draw_mode', false)
+    Session.set 'draw_mode', false
     cat = new fabric.loadSVGFromURL 'black_cat.svg', (objects, options) ->
       shape = fabric.util.groupSVGElements objects, options
       window.canvas.add shape.scale 0.2
   'click .octocat': (e)->
     e.preventDefault()
-    Session.set('draw_mode', false)
+    Session.set 'draw_mode', false
     cat = new fabric.loadSVGFromURL 'git-cat.svg', (objects, options) ->
       shape = fabric.util.groupSVGElements objects, options
       window.canvas.add shape.scale 0.6
