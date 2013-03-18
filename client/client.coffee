@@ -1,10 +1,21 @@
+Meteor.startup ->
+  window.canvas = new fabric.Canvas 'c'
+  setTimeout ->
+    imgElement = window.document.getElementById 'image'
+    imgInstance = new fabric.Image imgElement,
+      top: $('img').height() / 2
+      left: $('img').width() / 2
+    window.canvas.add imgInstance
+    window.canvas.setWidth($('img').width())
+    window.canvas.setHeight($('img').height())
+    Session.set('draw_mode', true)
+  , 500
 grab_image = (url, id) ->
   Meteor.call 'get_image', url, id, (err, result) ->
     if err then console.error err
     render_image result
 
 render_image = (image) ->
-  window.canvas = new fabric.Canvas 'c'
   $('#image').remove()
   window.canvas.clear()
   image = Meteor.render ->
@@ -19,7 +30,7 @@ render_image = (image) ->
     window.canvas.setWidth($('img').width())
     window.canvas.setHeight($('img').height())
     Session.set('draw_mode', true)
-  , 1
+  , 500
 
 share = (name) ->
   Session.set('share_pressed', true)
@@ -68,11 +79,11 @@ Meteor.Router.add
 
 Template.hero_menu.events
   "click .deface": (e) ->
-    Session.set('image', true)
     e.preventDefault()
     url = $('.url').val()
     if !url
-      url = 'https://sphotos-a.xx.fbcdn.net/hphotos-prn1/13888_10152626323675160_1043387988_n.jpg'
+      return
+    Session.set('image', true)
     id = url.split('/').pop()
     Session.set('id', id)
     grab_image url, id
@@ -80,9 +91,10 @@ Template.hero_menu.events
 Template.menu.events
   "click .deface": (e) ->
     e.preventDefault()
-    url = $('.url').val()
+    url = $('#url').val()
     if !url
-      url = 'https://sphotos-a.xx.fbcdn.net/hphotos-prn1/13888_10152626323675160_1043387988_n.jpg'
+      return
+    Session.set('image', true)
     id = url.split('/').pop()
     Session.set('id', id)
     grab_image url, id

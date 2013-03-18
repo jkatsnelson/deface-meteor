@@ -11,7 +11,6 @@
 		{{#unless image}}
 			{{>hero_menu}}
 		{{/unless}}
-		{{#if image}}
 			<div class="row-fluid">
 				<div class="span2">
 					{{> share}}
@@ -30,7 +29,6 @@
 					{{> cats}}
 				</div>
 	  	</div>
-  	{{/if}}
 	</div>
 </template>
 
@@ -39,7 +37,7 @@
 		<h1 class="text-center">Who do you want to deface?</h1>
 		<h3 class="text-center">Place a url to any jpg and get to work.</h3>
 		<div class="row-fluid">
-			<input class="url span8 offset2" type="text" placeholder="https://sphotos-a.xx.fbcdn.net/hphotos-prn1/13888_10152626323675160_1043387988_n.jpg">
+			<input class="url span8 offset2" type="text" placeholder="Put a jpg URL here!!">
 		</div>
 		<div class="row-fluid">
 			<button class="offset5 btn-primary btn-large deface" type="button">Deface!</button>
@@ -63,7 +61,7 @@
 <template name="menu">
 	<div class="row-fluid deface_menu well">
 		<h4 class="pull-left">Want to deface someone else?</h4>
-		<input class="span12"  id="url" type="text" placeholder="https://sphotos-a.xx.fbcdn.net/hphotos-prn1/13888_10152626323675160_1043387988_n.jpg" >
+		<input class="span12"  id="url" type="text" placeholder="Put a jpg URL here!!" >
 		<button class="btn-primary deface pull-left" type="button">Deface!</button>
 	</div>
 </template>
@@ -77,6 +75,7 @@
 			{{#if image}}
 			  {{image_to_canvas}}
 			{{/if}}
+			<image src="/thebiebs.jpeg" id="image">
 		</div>
 	</div>
 </template>
