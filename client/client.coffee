@@ -1,5 +1,11 @@
 Meteor.startup ->
   window.canvas = new fabric.Canvas 'c'
+  query = Images.find({})
+  handle = query.observe
+    changed: (id, image) ->
+      console.log "changed"
+      test_canvas = new fabric.Canvas 'c'
+      test_canvas.loadFromJSON image
   setTimeout ->
     imgElement = window.document.getElementById 'image'
     imgInstance = new fabric.Image imgElement,
@@ -8,8 +14,13 @@ Meteor.startup ->
     window.canvas.add imgInstance
     window.canvas.setWidth($('img').width())
     window.canvas.setHeight($('img').height())
+    window.canvas.on 'mouse:up', () ->
+      image = window.canvas.toJSON()
+      _.extend image, time: Date.now()
+      Images.insert image
     Session.set('draw_mode', true)
   , 500
+
 grab_image = (url, id) ->
   Meteor.call 'get_image', url, id, (err, result) ->
     if err then console.error err
@@ -113,6 +124,10 @@ Template.draw_button.events
       Session.set('draw_mode', true)
 
 Template.draw_menu.events
+  'click .deserialize': (e) ->
+    test_canvas = new fabric.Canvas 'c'
+    image = Images.findOne({})
+    test_canvas.loadFromJSON image
   'change .line_width': (e)->
     e.preventDefault()
     window.canvas.freeDrawingLineWidth = e.target.value
