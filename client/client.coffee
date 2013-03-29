@@ -4,6 +4,7 @@ Meteor.startup ->
   handle = query.observe
     added: (image) ->
       console.log "added"
+      image.objects &&
       window.canvas.loadFromJSON image
   setTimeout ->
     imgElement = window.document.getElementById 'image'
