@@ -2,6 +2,10 @@ Meteor.startup ->
   window.canvas = new fabric.Canvas 'c'
   query = Images.find({})
   handle = query.observe
+    added: (id, image) ->
+      console.log "added"
+      test_canvas = new fabric.Canvas 'c'
+      test_canvas.loadFromJSON image
     changed: (id, image) ->
       console.log "changed"
       test_canvas = new fabric.Canvas 'c'
