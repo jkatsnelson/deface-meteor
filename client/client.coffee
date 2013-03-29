@@ -7,11 +7,15 @@ Meteor.startup ->
       image.objects &&
       window.canvas.loadFromJSON image
   setTimeout ->
-    imgElement = window.document.getElementById 'image'
-    imgInstance = new fabric.Image imgElement,
-      top: $('img').height() / 2
-      left: $('img').width() / 2
-    window.canvas.add imgInstance
+    if Images.find({}).fetch().length is 0
+      imgElement = window.document.getElementById 'image'
+      imgInstance = new fabric.Image imgElement,
+        top: $('img').height() / 2
+        left: $('img').width() / 2
+      window.canvas.add imgInstance
+    else
+      image = Images.find({}, {sort: {time: 1}, limit: 1}).fetch()[0]
+      window.canvas.loadFromJSON image
     window.canvas.setWidth($('img').width())
     window.canvas.setHeight($('img').height())
     window.canvas.on 'mouse:up', () ->
