@@ -28,7 +28,7 @@ set_canvas = () ->
 
 grab_image = (url, id) ->
   Meteor.call 'get_image', url, id, (err, result) ->
-    if err then console.error err
+    throw err if err
     render_image result
 
 render_image = (image) ->
