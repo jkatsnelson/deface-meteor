@@ -3,7 +3,6 @@ Meteor.startup ->
   query = Images.find({})
   handle = query.observe
     added: (image) ->
-      console.log "added"
       image.objects &&
       window.canvas.loadFromJSON image
   setTimeout ->
@@ -16,14 +15,16 @@ Meteor.startup ->
     else
       image = Images.find({}, {sort: {time: 1}, limit: 1}).fetch()[0]
       window.canvas.loadFromJSON image
+    set_canvas()
+    Session.set('draw_mode', true)
+  , 500
+
+set_canvas = () ->
     window.canvas.setWidth($('img').width())
     window.canvas.setHeight($('img').height())
     window.canvas.on 'mouse:up', () ->
       image = window.canvas.toJSON()
-      _.extend image, time: Date.now()
       Images.insert image
-    Session.set('draw_mode', true)
-  , 500
 
 grab_image = (url, id) ->
   Meteor.call 'get_image', url, id, (err, result) ->
@@ -82,6 +83,7 @@ Template.draw_button.draw_mode = ->
     return 'btn btn-large btn-success draw'
   else
     return 'btn btn-large draw btn-inverse'
+
 Template.share.share_pressed = ->
   Session.get('share_pressed')
 

@@ -10,13 +10,13 @@ request = require(modulePath + '/request')
 Meteor.methods
 	get_image: (url, id) ->
 		fut = new Future()
-		console.log url
 		options =
 			url: url
 			encoding: null
+		# Get raw JPG binaries
 		request.get options, (error, result, body) ->
 			if error then return console.error error
 			jpeg = body.toString('base64')
 			fut.ret jpeg
-			console.log 'made a get request'
+		# pause until binaries are fully loaded
 		return fut.wait()
