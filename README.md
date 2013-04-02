@@ -1,4 +1,5 @@
-*add alert to add url
-*support for file types other than jpg
-*progress bar for clicking deface
-*cats come in high on top left
+*Futures
+*Meteor HTTP get
+*Implement node modules in Meteor
+*Collaboration
+*TODOs as Issues

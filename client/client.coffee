@@ -1,10 +1,9 @@
 Meteor.startup ->
   window.canvas = new fabric.Canvas 'c'
   query = Images.find({})
-  handle = query.observe
+  query.observe
     added: (image) ->
-      image.objects &&
-      window.canvas.loadFromJSON image
+      image.objects && window.canvas.loadFromJSON image
   setTimeout ->
     if Images.find({}).fetch().length is 0
       imgElement = window.document.getElementById 'image'
@@ -20,11 +19,11 @@ Meteor.startup ->
   , 500
 
 set_canvas = () ->
-    window.canvas.setWidth($('img').width())
-    window.canvas.setHeight($('img').height())
-    window.canvas.on 'mouse:up', () ->
-      image = window.canvas.toJSON()
-      Images.insert image
+  window.canvas.setWidth($('img').width())
+  window.canvas.setHeight($('img').height())
+  window.canvas.on 'mouse:up', () ->
+    image = window.canvas.toJSON()
+    Images.insert image
 
 grab_image = (url, id) ->
   Meteor.call 'get_image', url, id, (err, result) ->
