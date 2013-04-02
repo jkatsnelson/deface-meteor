@@ -7,6 +7,7 @@ Deface is a collaborative draw-on-someone's-face app.
   - Add SVG images of cats to the photo. 
   - Use the draw tool to upgrade the photo with MS Paint optimization.
 
+Check it out in production! [deface.meteor.com]
 Deface was written by John Katsnelson. Check out his website to read more about him and the project: [JKats.info] [jkats].
 
 Version
@@ -171,6 +172,7 @@ Add more canvas drawing tools:
 [Twitter Bootstrap]: http://twitter.github.com/bootstrap/
 [jQuery]: http://jquery.com  
 [request]: https://github.com/mikeal/request
+[deface.meteor.com]: https://deface.meteor.com/
   
 
     
