@@ -93,16 +93,11 @@ Meteor.Router.add
   'tests' : 'tests'
   '/': 'main'
 
-Template.hero_menu.events
-  "click .deface": (e) ->
+Template.remove.events
+  "click .remove": (e) ->
     e.preventDefault()
-    url = $('.url').val()
-    if !url
-      return
-    Session.set('image', true)
-    id = url.split('/').pop()
-    Session.set('id', id)
-    grab_image url, id
+    Images.remove({})
+    document.location.reload()
 
 Template.menu.events
   "click .deface": (e) ->
