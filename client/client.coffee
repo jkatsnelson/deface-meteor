@@ -97,7 +97,9 @@ Template.remove.events
   "click .remove": (e) ->
     e.preventDefault()
     Images.remove({})
-    document.location.reload()
+    setTimeout ->
+      document.location.reload()
+    , 100
 
 Template.menu.events
   "click .deface": (e) ->
